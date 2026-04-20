@@ -1,0 +1,175 @@
+{
+  "$schema": "https://docs.oasis-open.org/cti/stix/v2.1/cs01/schemas/common/stix-cti-v2.1-CS01.json",
+  "threat_name": "Akifs Hitter V2",
+  "threat_type": "malicious-browser-extension",
+  "threat_category": "credit-card-fraud / carding / checker",
+  "first_seen": "2026-04",
+  "last_updated": "2026-04-20",
+  "attribution_note": "Distributed via Telegram @akifshitter. Single-operator tool customization; each copy is configured with a different Telegram bot token and chat ID at install time.",
+  "mitre_attack": {
+    "tactics": ["TA0009 Collection", "TA0010 Exfiltration", "TA0040 Impact"],
+    "techniques": [
+      "T1176 Browser Extensions",
+      "T1539 Steal Web Session Cookie",
+      "T1056.003 Web Portal Capture",
+      "T1071.001 Application Layer Protocol: Web Protocols",
+      "T1090.003 Multi-hop Proxy",
+      "T1555 Credentials from Password Stores (indirect: publishable key harvest)",
+      "T1598 Phishing for Information (supporting: bypass of hCaptcha)"
+    ]
+  },
+  "browser": "chromium",
+  "manifest_version": 3,
+  "required_permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "offscreen",
+    "downloads",
+    "clipboardWrite",
+    "tabs",
+    "webNavigation",
+    "alarms",
+    "proxy",
+    "webRequest",
+    "webRequestAuthProvider"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "domains": {
+    "target_platforms": [
+      "checkout.stripe.com",
+      "*.stripe.com",
+      "*.stripe.network",
+      "*.stripecdn.com",
+      "*.link.com"
+    ],
+    "captcha_bypass": [
+      "hcaptcha.com",
+      "*.hcaptcha.com",
+      "newassets.hcaptcha.com"
+    ],
+    "ip_reconnaissance": [
+      "api.ipify.org",
+      "ipinfo.io",
+      "ifconfig.me"
+    ],
+    "intel_enrichment": [
+      "lookup.binlist.net"
+    ],
+    "c2_exfiltration": [
+      "api.telegram.org"
+    ],
+    "distribution": [
+      "t.me/akifshitter"
+    ]
+  },
+  "urls": [
+    "https://api.ipify.org?format=json",
+    "https://ipinfo.io/json",
+    "https://ifconfig.me/ip",
+    "https://lookup.binlist.net/",
+    "https://api.telegram.org/bot{TOKEN}/sendMessage",
+    "https://t.me/akifshitter"
+  ],
+  "chrome_runtime_message_types": [
+    "AKIF_HIT_SEND",
+    "AKIF_GET_CURRENT_IP",
+    "AKIF_PROXY_TEST",
+    "TELEGRAM_SEND",
+    "TELEGRAM_SEND_DIRECT",
+    "PROXY_FETCH",
+    "BACKGROUND_FETCH",
+    "CAPTURE_SCREENSHOT",
+    "SET_ACTIVE_PROXY",
+    "CLEAR_ACTIVE_PROXY",
+    "UPDATE_GLOBAL_PROXY_LIST",
+    "PLAY_SUCCESS_SOUND",
+    "PLAY_BACKGROUND_MUSIC"
+  ],
+  "window_globals": [
+    "__AKIF_HCAPTCHA_LOADED"
+  ],
+  "ui_fingerprints": {
+    "css_classes": [
+      "akif-toast-v5",
+      "akif-cyber-toast",
+      "akif-filter-chip",
+      "akif-clear-chip",
+      "akif-progress-bar-v5",
+      "card-toast",
+      "logout-square-btn",
+      "header-controls",
+      "akif-toast-icon-v5",
+      "akif-toast-title-v5",
+      "akif-toast-subtitle-v5",
+      "akif-badge-v5",
+      "akif-progress-v5"
+    ],
+    "data_attributes": [
+      "data-f",
+      "data-clear",
+      "data-stripe-publishable-key"
+    ],
+    "ui_text_strings": [
+      "AKIF HITTER V2",
+      "Paid Successfully",
+      "Clear logs",
+      "akifshitter"
+    ]
+  },
+  "file_fingerprints": {
+    "manifest_json_fields": {
+      "name_equals": "Akifs Hitter",
+      "description_equals": "Akif's System - Special For Stripe Checkouts"
+    },
+    "welcome_html_contains": "https://t.me/akifshitter",
+    "rules_json_contains_rules": [
+      "remove content-security-policy on stripe checkout",
+      "remove x-frame-options on stripe checkout",
+      "regex filter cs_(live|test)_[A-Za-z0-9]{8,}"
+    ],
+    "required_files": [
+      "script/background.js",
+      "script/content.js",
+      "script/inject.js",
+      "script/hcaptcha.js",
+      "script/autofill.js",
+      "script/login.js",
+      "script/storage.js",
+      "script/offscreen.js"
+    ],
+    "required_assets": [
+      "sounds/hit.wav",
+      "sounds/music.mp3",
+      "icons/logo.png"
+    ]
+  },
+  "regex_signatures": {
+    "pk_harvest": [
+      "pk_live_[a-zA-Z0-9]+",
+      "pk_test_[a-zA-Z0-9]+"
+    ],
+    "cs_harvest": [
+      "cs_live_[a-zA-Z0-9]+",
+      "cs_test_[a-zA-Z0-9]+"
+    ],
+    "cs_rules_json": "cs_(live|test)_[A-Za-z0-9]{8,}"
+  },
+  "card_input_format": "PAN|MM|YY|CVV",
+  "obfuscation_stack": [
+    "obfuscator.io string-array with alias decoders",
+    "custom per-file VM wrapper named __akifVM_<hex>",
+    "control-flow-flattening forwarder objects",
+    "hex-mangled identifiers",
+    "anti-tamper: bogus TextDecoder method, poisoned base64 chunks"
+  ],
+  "defensive_recommendations": {
+    "block_manifest_signatures": true,
+    "block_declarativeNetRequest_rules_that_strip_csp_on_stripe": true,
+    "block_unpacked_extensions_requesting_proxy_and_webrequest_and_all_urls": true,
+    "monitor_chrome_runtime_message_types": true,
+    "monitor_outbound_api_telegram_org_from_extension_context": true
+  }
+}

@@ -1,0 +1,41 @@
+# Regex patterns the tool uses internally to scrape / match data.
+# These are distinctive when seen in a JavaScript file, especially
+# when multiple of them appear together.
+
+# --- Stripe publishable key harvest ---
+# Scrapes the victim page and embedded <script> contents for keys.
+/pk_live_[a-zA-Z0-9]+/
+/pk_test_[a-zA-Z0-9]+/
+
+# --- Stripe checkout session hijack ---
+# Extracts active checkout session IDs visible in the DOM.
+/cs_live_[a-zA-Z0-9]+(?=[#\/\?&\s]|$)/
+/cs_test_[a-zA-Z0-9]+(?=[#\/\?&\s]|$)/
+
+# --- Extended session-ID matcher used for declarative_net_request ---
+# Seen in rules.json; strips response headers from any URL containing a session ID.
+cs_(live|test)_[A-Za-z0-9]{8,}
+
+# --- hCaptcha host check (used by the auto-solver to scope itself) ---
+/(^|\.)hcaptcha\.com$/
+
+# --- Card input parser (operator paste-in format) ---
+# The operator pastes a newline-delimited list where each line is:
+#   <card>|<mm>|<yy>|<cvv>
+# e.g. 4111111111111111|12|28|123
+# The tool splits on '|' and validates with Luhn + length.
+# A file containing a regex like /^(\d{13,19})\|(\d{2})\|(\d{2,4})\|(\d{3,4})$/
+# or similar, in a Chrome extension, is itself an IOC.
+
+# --- Data attribute for Stripe publishable-key DOM scrape ---
+[data-stripe-publishable-key]
+
+# --- Field selectors used to drive autofill ---
+# These are Stripe's standard checkout element ids, not unique, but their
+# presence combined with the rest of the fingerprint is indicative.
+#cardNumber
+#cardCvc
+#cardExpiry
+input[name="cardnumber"]
+input[name="cvc"]
+input[name="exp-date"]

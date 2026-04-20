@@ -1,0 +1,24 @@
+# Never commit
+node_modules/
+package-lock.json
+*.log
+
+# Never commit under any circumstances:
+# The obfuscated sample itself or any deobfuscated version of it.
+# This project is defensive-only; sample binaries stay off the public repo.
+sample/
+samples/
+script/
+deobfuscated/
+extension/
+*.crx
+*.xpi
+
+# Editor noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~

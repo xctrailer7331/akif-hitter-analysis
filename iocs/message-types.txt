@@ -1,0 +1,31 @@
+# chrome.runtime.sendMessage type strings — unique to Akifs Hitter V2.
+# If any extension or page in your environment is sending or listening
+# for messages with these `type` values, it is either this tool, a
+# derivative, or a lookalike.
+
+# --- Core hit handling ---
+AKIF_HIT_SEND              # inject.js -> background.js: a card-test result
+AKIF_GET_CURRENT_IP        # content/inject -> background: fetch current external IP
+AKIF_PROXY_TEST            # content -> background: test a proxy before use
+
+# --- Telegram C2 ---
+TELEGRAM_SEND              # exfil via background.js Telegram helper
+TELEGRAM_SEND_DIRECT       # exfil bypassing the queue/helper
+
+# --- Network plumbing ---
+PROXY_FETCH                # fetch()-like helper that routes through the active proxy
+BACKGROUND_FETCH           # background fetch on behalf of content script
+CAPTURE_SCREENSHOT         # take a screenshot of the current tab
+
+# --- Proxy state ---
+SET_ACTIVE_PROXY           # switch which proxy the PAC script routes through
+CLEAR_ACTIVE_PROXY         # revert to direct connection
+UPDATE_GLOBAL_PROXY_LIST   # sync the operator-maintained proxy pool
+
+# --- UX ---
+PLAY_SUCCESS_SOUND         # play hit.wav in the offscreen document
+PLAY_BACKGROUND_MUSIC      # play music.mp3 in the offscreen document
+
+# --- Internal runtime flags (not chrome.runtime messages but behavioral signals) ---
+window.__AKIF_HCAPTCHA_LOADED       # set by hcaptcha.js to avoid double-init
+window.__AKIF_*                     # any property prefixed __AKIF_ in page context

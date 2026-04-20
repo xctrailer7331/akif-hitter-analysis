@@ -1,0 +1,35 @@
+# Domains observed in Akifs Hitter V2
+# Categorized by role. A '*' prefix means all subdomains as well.
+# All entries are extracted from the tool's own configuration /
+# hardcoded PAC target list / runtime network calls.
+
+# === Target platforms (attacks run against these) ===
+checkout.stripe.com
+*.checkout.stripe.com
+stripe.com
+*.stripe.com
+stripe.network
+*.stripe.network
+stripecdn.com
+*.stripecdn.com
+link.com
+*.link.com
+
+# === Captcha bypass target ===
+hcaptcha.com
+*.hcaptcha.com
+newassets.hcaptcha.com
+
+# === Operator reconnaissance (check own IP after proxy rotation) ===
+api.ipify.org
+ipinfo.io
+ifconfig.me
+
+# === Intelligence enrichment (BIN lookup) ===
+lookup.binlist.net
+
+# === C2 / exfiltration ===
+api.telegram.org
+
+# === Distribution / community ===
+t.me/akifshitter

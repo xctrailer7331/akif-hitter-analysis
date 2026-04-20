@@ -1,0 +1,27 @@
+# Full URLs / endpoints observed in Akifs Hitter V2.
+# Operator-supplied secrets (bot token, chat id) appear as <placeholders>.
+
+# --- IP reconnaissance ---
+https://api.ipify.org?format=json
+https://ipinfo.io/json
+https://ifconfig.me/ip
+
+# --- BIN (Bank Identification Number) lookup ---
+https://lookup.binlist.net/<first-6-digits-of-PAN>
+
+# --- Telegram C2 exfiltration ---
+https://api.telegram.org/bot<TOKEN>/sendMessage
+#   Method: POST
+#   Body JSON: { "chat_id": <chatId>, "text": "<HTML-formatted hit details>", "parse_mode": "HTML" }
+#   Both <TOKEN> and <chatId> are configured by the operator at install time; they are NOT hardcoded.
+#   The presence of these requests originating from a Chrome extension content/background script
+#   is itself a strong IOC.
+
+# --- Distribution / community ---
+https://t.me/akifshitter
+
+# --- Targeted checkout URL patterns (content script injection) ---
+https://checkout.stripe.com/*
+https://*.checkout.stripe.com/*
+# Also matches URLs containing a Stripe Checkout Session ID pattern
+# (cs_live_* / cs_test_* — see regex-patterns.txt).
