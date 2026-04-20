@@ -13,7 +13,7 @@ This repository:
 - ✅ Publishes **detection assets**: YARA rule, IOC lists, Chrome block policy
 - ✅ Provides a **removal guide** for affected users
 - ✅ Provides **responsible-disclosure templates** for Stripe / hCaptcha / Chrome
-- ❌ Does **not** publish deobfuscated source code
+- ✅ Provides publish deobfuscated source code
 - ❌ Is **not** a function-by-function walkthrough
 - ❌ Is **not** a "how to build your own" tutorial
 
